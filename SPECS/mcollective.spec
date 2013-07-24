@@ -145,7 +145,7 @@ rm -rf %{buildroot}
 
 %post
 %if 0%{?fedora} <= 14 || 0%{?rhel}
-/sbin/chkconfig --add mcollective || :
+/sbin/chkconfig --add %{?scl:%scl_prefix}mcollective || :
 %endif
 %if 0%{?fedora} >= 15
 if [ $1 -eq 1 ] ; then
@@ -191,7 +191,7 @@ fi
 /usr/bin/systemd-sysv-convert --save mcollective >/dev/null 2>&1 ||:
 
 # Run these because the SysV package being removed won't do them
-/sbin/chkconfig --del mcollective >/dev/null 2>&1 || :
+/sbin/chkconfig --del %{?scl:%scl_prefix}mcollective >/dev/null 2>&1 || :
 /bin/systemctl try-restart mcollective.service >/dev/null 2>&1 || :
 %endif
 
