@@ -111,8 +111,8 @@ cp --preserve=timestamps --recursive lib/* %{buildroot}/%{ruby_vendorlibdir}
 
 %if 0%{?fedora} <= 14 || 0%{?rhel} 
 %{__install} -d -m0755  %{buildroot}%{_initrddir}
-mkdir -p %{buildroot}%{?scl:%_root_sysconfdir}%{!?scl:%_sysconfdir}/rc.d
-%{__install} -p -m0755 ext/redhat/mcollective.init %{buildroot}%{?scl:%_root_sysconfdir}%{!?scl:%_sysconfdir}/rc.d/%{?scl_prefix}mcollective
+mkdir -p %{buildroot}%{?scl:%_root_initddir}%{!?scl:%_initddir}
+%{__install} -p -m0755 ext/redhat/mcollective.init %{buildroot}%{?scl:%_root_initddir}%{!?scl:%_initddir}/%{?scl_prefix}mcollective
 %{__install} -d -m0755  %{buildroot}%{?scl:%{_scl_root}}/etc/sysconfig
 %{__install} -p -m0755 etc/sysconfig/mcollective %{buildroot}%{?scl:%{_scl_root}}/etc/sysconfig
 %endif
@@ -157,7 +157,7 @@ fi
 %postun
 %if 0%{?fedora} <= 14 || 0%{?rhel}
 if [ "$1" -ge 1 ]; then
-        /sbin/service mcollective condrestart &>/dev/null || :
+        /sbin/service %{?scl:%scl_prefix}mcollective condrestart &>/dev/null || :
 fi
 %endif
 %if 0%{?fedora} >= 15
@@ -171,8 +171,8 @@ fi
 %preun
 %if 0%{?fedora} <= 14 || 0%{?rhel}
 if [ "$1" = 0 ] ; then
-  /sbin/service mcollective stop > /dev/null 2>&1
-  /sbin/chkconfig --del mcollective || :
+  /sbin/service %{?scl:%scl_prefix}mcollective stop > /dev/null 2>&1
+  /sbin/chkconfig --del %{?scl:%scl_prefix}mcollective || :
 fi
 %endif
 %if 0%{?fedora} >= 15
@@ -222,7 +222,7 @@ fi
 %config %{_sysconfdir}/sysconfig/mcollective
 %{_sbindir}/mcollectived
 %if 0%{?fedora} <= 14 || 0%{?rhel} 
-%{?scl:%_root_sysconfdir}%{!?scl:%_sysconfdir}/rc.d/%{?scl_prefix}mcollective
+%{?scl:%_root_initddir}%{!?scl:%_initddir}/%{?scl_prefix}mcollective
 %endif
 %if 0%{?fedora} >= 15
 %{_unitdir}/mcollective.service
