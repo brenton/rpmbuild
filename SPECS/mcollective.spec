@@ -33,7 +33,7 @@ Patch1:    mcollective-ruby193-configs.patch
 
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires: ruby-devel
+BuildRequires: %{?scl:%scl_prefix}ruby-devel
 %if 0%{?fedora} >= 15
 BuildRequires: systemd-units
 %endif
