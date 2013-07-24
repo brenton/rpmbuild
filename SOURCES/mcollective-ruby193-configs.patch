@@ -1,0 +1,91 @@
+diff -ur mcollective-2.2.1/bin/mcollectived mcollective-2.2.1.ruby193/bin/mcollectived
+--- mcollective-2.2.1/bin/mcollectived	2012-10-17 09:40:51.000000000 -0700
++++ mcollective-2.2.1.ruby193/bin/mcollectived	2013-07-17 10:49:22.350000093 -0700
+@@ -9,7 +9,7 @@
+   [ '--pidfile', '-p', GetoptLong::REQUIRED_ARGUMENT]
+ )
+ 
+-configfile = "/etc/mcollective/server.cfg"
++configfile = "/opt/rh/ruby193/root/etc/mcollective/server.cfg"
+ pid = ""
+ 
+ opts.each do |opt, arg|
+diff -ur mcollective-2.2.1/ext/redhat/mcollective.init mcollective-2.2.1.ruby193/ext/redhat/mcollective.init
+--- mcollective-2.2.1/ext/redhat/mcollective.init	2012-10-17 09:40:51.000000000 -0700
++++ mcollective-2.2.1.ruby193/ext/redhat/mcollective.init	2013-07-17 11:26:17.144000088 -0700
+@@ -16,11 +16,11 @@
+ # Description:       Enable service provided by daemon.
+ ### END INIT INFO
+ 
+-mcollectived="/usr/sbin/mcollectived"
+-pidfile="/var/run/mcollectived.pid"
+-if [ -d /var/lock/subsys ]; then
++mcollectived="/opt/rh/ruby193/root/usr/sbin/mcollectived"
++pidfile="/opt/rh/ruby193/root/var/run/mcollectived.pid"
++if [ -d /opt/rh/ruby193/root/var/lock/subsys ]; then
+     # RedHat/CentOS/etc who use subsys
+-    lockfile="/var/lock/subsys/mcollective"
++    lockfile="/opt/rh/ruby193/root/var/lock/subsys/mcollective"
+ else
+     # The rest of them
+     lockfile="/var/lock/mcollective"
+@@ -35,8 +35,8 @@
+ # Source function library.
+ . /etc/init.d/functions
+ 
+-if [ -f /etc/sysconfig/mcollective ]; then
+-    . /etc/sysconfig/mcollective
++if [ -f /opt/rh/ruby193/root/etc/sysconfig/mcollective ]; then
++    . /opt/rh/ruby193/root/etc/sysconfig/mcollective
+ fi
+ 
+ # Determine if we can use the -p option to daemon, killproc, and status.
+@@ -50,7 +50,7 @@
+     echo -n "Starting mcollective: "
+     # Only try to start if not already started
+     if ! rh_status_q; then
+-      daemon ${daemonopts} ${mcollectived} --pid=${pidfile} --config="/etc/mcollective/server.cfg"
++      daemon ${daemonopts} ${mcollectived} --pid=${pidfile} --config="/opt/rh/ruby193/root/etc/mcollective/server.cfg"
+     fi
+     # This will be 0 if mcollective is already running
+     RETVAL=$?
+diff -ur mcollective-2.2.1/lib/mcollective/rpc.rb mcollective-2.2.1.ruby193/lib/mcollective/rpc.rb
+--- mcollective-2.2.1/lib/mcollective/rpc.rb	2012-10-17 09:40:51.000000000 -0700
++++ mcollective-2.2.1.ruby193/lib/mcollective/rpc.rb	2013-07-17 10:44:59.700000092 -0700
+@@ -58,7 +58,7 @@
+     # exit if there is a failure constructing the RPC client. Set this flag
+     # to false to cause an Exception to be raised instead.
+     def rpcclient(agent, flags = {})
+-      configfile = flags[:configfile] || "/etc/mcollective/client.cfg"
++      configfile = flags[:configfile] || "/opt/rh/ruby193/root/etc/mcollective/client.cfg"
+       options = flags[:options] || nil
+ 
+       if flags.key?(:exit_on_failure)
+diff -ur mcollective-2.2.1/lib/mcollective/util.rb mcollective-2.2.1.ruby193/lib/mcollective/util.rb
+--- mcollective-2.2.1/lib/mcollective/util.rb	2012-10-17 09:40:51.000000000 -0700
++++ mcollective-2.2.1.ruby193/lib/mcollective/util.rb	2013-07-17 10:45:17.180000090 -0700
+@@ -145,10 +145,10 @@
+         config = File.expand_path("~/.mcollective")
+ 
+         unless File.readable?(config) && File.file?(config)
+-          config = "/etc/mcollective/client.cfg"
++          config = "/opt/rh/ruby193/root/etc/mcollective/client.cfg"
+         end
+       rescue Exception => e
+-        config = "/etc/mcollective/client.cfg"
++        config = "/opt/rh/ruby193/root/etc/mcollective/client.cfg"
+       end
+ 
+       return config
+diff -ur mcollective-2.2.1/mcollective.init mcollective-2.2.1.ruby193/mcollective.init
+--- mcollective-2.2.1/mcollective.init	2012-10-17 09:40:51.000000000 -0700
++++ mcollective-2.2.1.ruby193/mcollective.init	2013-07-17 10:46:24.329000101 -0700
+@@ -61,7 +61,7 @@
+ 
+         rm -f ${pidfile}
+ 
+-        ${mcollectived} --pid=${pidfile} --config="/etc/mcollective/server.cfg"
++        ${mcollectived} --pid=${pidfile} --config="/opt/rh/ruby193/root/etc/mcollective/server.cfg"
+         if [ $? = 0 ]; then
+             log_success_msg
+             touch $lock
