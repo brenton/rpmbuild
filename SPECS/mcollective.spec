@@ -7,9 +7,6 @@
 %global rubyabi 1.9.1
 
 %global ruby_vendorlibdir /opt/rh/ruby193/root/usr/share/ruby
-# _libexecdir will still point to the system location.  We need to force
-# mcollective common to use the SCL.
-%global libexec_dir /opt/rh/ruby193/root/usr/libexec
 
 Summary:   A framework to build server orchestration or parallel job execution systems
 Name:      %{?scl:%scl_prefix}mcollective
@@ -63,6 +60,9 @@ Requires: %{?scl:%scl_prefix}rubygem(systemu)
 BuildRequires: %{?scl:%scl_prefix}build
 BuildRequires: scl-utils-build
 %endif
+Obsoletes: mcollective = 2.2.1-4.el6op
+Obsoletes: mcollective-client = 2.2.1-4.el6op
+Obsoletes: %{?scl:%scl_prefix}mcollective-common = 2.2.1-4.el6op
 
 %description -n %{?scl:%scl_prefix}mcollective-common
 Common libraries for the mcollective clients and servers
@@ -122,8 +122,9 @@ mkdir -p %{buildroot}%{?scl:%_root_initddir}%{!?scl:%_initddir}
 %{__install} -p -m0644 %{SOURCE1} %{buildroot}%{_unitdir}/mcollective.service
 %endif
 
-%{__install} -d -m0755  %{buildroot}%{?scl:%{_scl_root}}%{libexec_dir}/mcollective
-cp --preserve=timestamps --recursive plugins/* %{buildroot}%{?scl:%{_scl_root}}%{libexec_dir}/mcollective
+%{__install} -d -m0755  %{buildroot}%{_libexecdir}/mcollective
+cp --preserve=timestamps --recursive plugins/* %{buildroot}%{_libexecdir}/mcollective
+
 
 %{__install} -d -m0755  %{buildroot}%{?scl:%{_scl_root}}/etc/mcollective
 %{__install} -d -m0755  %{buildroot}%{?scl:%{_scl_root}}/etc/mcollective/ssl
@@ -206,7 +207,7 @@ fi
 %config(noreplace) %{_sysconfdir}/mcollective/*.erb
 %{ruby_vendorlibdir}/mcollective.rb
 %{ruby_vendorlibdir}/mcollective
-%{?scl:%{_scl_root}}%{libexec_dir}/mcollective
+%{_libexecdir}/mcollective
 
 %files client
 %defattr(-,root,root,-)
