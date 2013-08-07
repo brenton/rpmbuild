@@ -145,9 +145,16 @@ mkdir -p %{buildroot}%{_mandir}/man1
 rm -rf %{buildroot}
 
 %post
-%if 0%{?fedora} <= 14 || 0%{?rhel}
-/sbin/chkconfig --add %{?scl:%scl_prefix}mcollective || :
+%if 0%{?rhel}
+if [ $1 = 1 ]; then
+    /sbin/chkconfig --add %{scl_prefix}mcollective || :
+fi
+
+semanage fcontext -a -e / /opt/rh/%{scl_prefix}/root
+restorecon -R %{_scl_root} >/dev/null 2>&1 || :
+
 %endif
+
 %if 0%{?fedora} >= 15
 if [ $1 -eq 1 ] ; then
     # Initial installation
