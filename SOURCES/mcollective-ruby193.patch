@@ -40,7 +40,7 @@ diff -ur mcollective-2.2.1/bin/mco mcollective-2.2.1.new/bin/mco
 +++ mcollective-2.2.1.new/bin/mco	2013-04-17 11:07:32.165107576 -0400
 @@ -1,4 +1,4 @@
 -#!/usr/bin/env ruby
-+#!/usr/bin/env oo-ruby
++#!/usr/bin/ruby193-ruby
  
  require 'mcollective'
  

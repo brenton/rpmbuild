@@ -70,7 +70,7 @@ Common libraries for the mcollective clients and servers
 %package client
 Summary: Client tools for the mcollective application server
 Requires: %{?scl:%scl_prefix}mcollective-common = %{version}-%{release}
-Requires: openshift-origin-util-scl
+Requires: ruby193-ruby-wrapper
 Group: Applications/System
 
 %description client
@@ -150,7 +150,8 @@ if [ $1 = 1 ]; then
     /sbin/chkconfig --add %{scl_prefix}mcollective || :
 fi
 
-semanage fcontext -a -e / /opt/rh/%{scl_prefix}/root
+/sbin/chkconfig %{scl_prefix}mcollective on || :
+semanage fcontext -a -e / /opt/rh/%{scl}/root
 restorecon -R %{_scl_root} >/dev/null 2>&1 || :
 
 %endif
