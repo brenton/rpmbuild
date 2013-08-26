@@ -11,7 +11,7 @@
 Summary:   A framework to build server orchestration or parallel job execution systems
 Name:      %{?scl:%scl_prefix}mcollective
 Version:   2.2.1
-Release:   5%{?dist}
+Release:   6%{?dist}
 Group:     Applications/System
 License:   ASL 2.0
 
