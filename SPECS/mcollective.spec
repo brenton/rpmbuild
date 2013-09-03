@@ -11,7 +11,7 @@
 Summary:   A framework to build server orchestration or parallel job execution systems
 Name:      %{?scl:%scl_prefix}mcollective
 Version:   2.2.1
-Release:   6%{?dist}
+Release:   7%{?dist}
 Group:     Applications/System
 License:   ASL 2.0
 
@@ -46,6 +46,8 @@ Requires(preun):  systemd-units
 Requires(postun): systemd-units
 Requires(post):   systemd-sysv
 %endif
+
+Requires(post):   policycoreutils-python
 
 %package -n %{?scl:%scl_prefix}mcollective-common
 Summary: Common libraries for the mcollective clients and servers
