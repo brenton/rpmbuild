@@ -244,6 +244,10 @@ fi
 %dir %{?scl:%{_scl_root}}/etc/mcollective/plugin.d
 
 %changelog
+* Tue Sep 03 2013 Brenton Leanhardt <bleanhar@redhat.com> - 2.2.1-7
+- Converting the package to use the SCL in order to run in parallel with a
+  system mcollective
+
 * Wed Apr 17 2013 Brenton Leanhardt <bleanhar@redhat.com> - 2.2.1-4
 - Client/Server configs are SCL aware
 - mco is SCL aware
